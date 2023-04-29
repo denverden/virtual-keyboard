@@ -1,0 +1,12 @@
+{
+  "parser": "babel-eslint",
+  "rules": {
+    "class-methods-use-this": 0,
+    "quotes": [1, "single"]
+  },
+  "env": {
+    "es6": true,
+    "browser": true
+  },
+  "extends": ["airbnb-base", "eslint:recommended"]
+}
