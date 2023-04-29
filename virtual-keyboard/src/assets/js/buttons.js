@@ -236,7 +236,7 @@ const keys = [
   {
     className: 'Semicolon',
     classBtn: 'btn',
-    english: { lowerKey: ';', upperKey: '"' },
+    english: { lowerKey: ';', upperKey: ':' },
     russian: { lowerKey: 'ж', upperKey: 'Ж' },
   },
   {

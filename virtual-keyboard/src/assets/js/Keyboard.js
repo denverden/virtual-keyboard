@@ -102,6 +102,15 @@ class Keyboard {
     e.selectionStart = e.selectionEnd;
   }
 
+  toggleLowUpBtn() {
+    document
+      .querySelectorAll(`.btn>.${this.lang}>.lowerKey`)
+      .forEach((element) => element.classList.toggle('hidden'));
+    document
+      .querySelectorAll(`.btn>.${this.lang}>.upperKey`)
+      .forEach((element) => element.classList.toggle('hidden'));
+  }
+
   toggleLang() {
     if (this.lang === 'english') {
       this.lang = 'russian';
@@ -156,6 +165,19 @@ class Keyboard {
     switch (this.char) {
       case 'Lang':
         this.toggleLang();
+        break;
+      case 'CapsLock':
+        document
+          .querySelector('.CapsLock')
+          .classList.toggle('btn--caps-active');
+        this.capsLock = !this.capsLock;
+        this.toggleLowUpBtn();
+        break;
+      case 'Shift':
+        if (!this.shift) {
+          this.toggleLowUpBtn();
+        }
+        this.shift = true;
         break;
       default:
         this.printCharBtn();
