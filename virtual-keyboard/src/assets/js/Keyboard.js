@@ -33,6 +33,7 @@ class Keyboard {
     Object.keys(keys).forEach((key) => {
       const btn = document.createElement('div');
       btn.classList.add('btn', keys[key].classBtn, keys[key].className);
+      btn.addEventListener('mousedown', this.mouseDown.bind(this));
       const nameRu = document.createElement('span');
       nameRu.classList.add('russian');
 
@@ -89,6 +90,77 @@ class Keyboard {
     div.append(kb);
     div.append(info);
     document.body.prepend(div);
+
+    document.addEventListener('mouseup', this.mouseUp.bind(this));
+  }
+
+  printCharBtn() {
+    const e = document.querySelector('.board__input');
+    const { value: val, selectionStart: start, selectionEnd: end } = e;
+    e.value = val.slice(0, start) + this.char + val.slice(end, val.length);
+    e.selectionEnd = start + this.char.length;
+    e.selectionStart = e.selectionEnd;
+  }
+
+  toggleLang() {
+    if (this.lang === 'english') {
+      this.lang = 'russian';
+    } else {
+      this.lang = 'english';
+    }
+
+    localStorage.setItem('lang', this.lang);
+    document.querySelector('.Lang').classList.toggle('btn--lang-russian');
+    document.querySelector('.Lang').classList.toggle('btn--lang-english');
+    document
+      .querySelectorAll('.btn>span')
+      .forEach((element) => element.classList.toggle('hidden'));
+    if ((this.capsLock && !this.shift) || (!this.capsLock && this.shift)) {
+      document
+        .querySelectorAll('.btn>span>.upperKey')
+        .forEach((element) => element.classList.toggle('hidden'));
+    } else {
+      document
+        .querySelectorAll('.btn>span>.lowerKey')
+        .forEach((element) => element.classList.toggle('hidden'));
+    }
+  }
+
+  mouseDown(event) {
+    event.target.classList.add('btn--active');
+
+    if (event.target) {
+      this.char = event.target
+        .querySelector(':not(.hidden)')
+        .querySelector(':not(.hidden)').textContent;
+      this.implementKeyFunction();
+    }
+
+    if ((this.char === 'Alt' && event.ctrlKey) || (this.char === 'Ctrl' && event.altKey)) {
+      this.toggleLang();
+    }
+  }
+
+  mouseUp() {
+    document
+      .querySelectorAll('.btn')
+      .forEach((element) => element.classList.remove('btn--active'));
+    if (this.shift) {
+      this.shift = false;
+      this.toggleLowUpBtn();
+    }
+    this.text.focus();
+  }
+
+  implementKeyFunction() {
+    switch (this.char) {
+      case 'Lang':
+        this.toggleLang();
+        break;
+      default:
+        this.printCharBtn();
+    }
+    this.text.focus();
   }
 }
 
