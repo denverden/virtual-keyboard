@@ -215,6 +215,14 @@ class Keyboard {
           this.text.selectionStart = this.text.selectionEnd = start;
         }
         break;
+      case 'Del':
+        if (start !== end) {
+          this.text.value = val.slice(0, start) + val.slice(end, val.length);
+        } else if (end !== val.length) {
+          this.text.value = val.slice(0, start) + val.slice(start + 1);
+        }
+        this.text.selectionStart = this.text.selectionEnd = start;
+        break;
       case 'Lang':
         this.toggleLang();
         break;
