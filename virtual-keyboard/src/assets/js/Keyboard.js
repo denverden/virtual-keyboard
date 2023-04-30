@@ -239,6 +239,18 @@ class Keyboard {
         }
         this.shift = true;
         break;
+      case 'Enter':
+        this.char = '\n';
+        this.printCharBtn();
+        break;
+      case 'Tab':
+        this.char = '\t\t';
+        this.printCharBtn();
+        break;
+      case 'Ctrl':
+        break;
+      case 'Alt':
+        break;
       default:
         this.printCharBtn();
     }
