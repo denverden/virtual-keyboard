@@ -200,7 +200,21 @@ class Keyboard {
   }
 
   implementKeyFunction() {
+    const { value: val, selectionStart: start, selectionEnd: end } = this.text;
+
     switch (this.char) {
+      case 'Backspace':
+        if (start !== end) {
+          this.text.value = val.slice(0, start) + val.slice(end, val.length);
+          this.text.selectionStart = this.text.selectionEnd = start;
+        } else if (start !== 0) {
+          this.text.value =
+            val.slice(0, start - 1) + val.slice(end, val.length);
+          this.text.selectionStart = this.text.selectionEnd = start - 1;
+        } else {
+          this.text.selectionStart = this.text.selectionEnd = start;
+        }
+        break;
       case 'Lang':
         this.toggleLang();
         break;
