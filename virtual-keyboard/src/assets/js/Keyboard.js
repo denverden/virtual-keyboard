@@ -206,13 +206,15 @@ class Keyboard {
       case 'Backspace':
         if (start !== end) {
           this.text.value = val.slice(0, start) + val.slice(end, val.length);
-          this.text.selectionStart = this.text.selectionEnd = start;
+          this.text.selectionStart = start;
+          this.text.selectionEnd = start;
         } else if (start !== 0) {
-          this.text.value =
-            val.slice(0, start - 1) + val.slice(end, val.length);
-          this.text.selectionStart = this.text.selectionEnd = start - 1;
+          this.text.value = val.slice(0, start - 1) + val.slice(end, val.length);
+          this.text.selectionStart = start - 1;
+          this.text.selectionEnd = start - 1;
         } else {
-          this.text.selectionStart = this.text.selectionEnd = start;
+          this.text.selectionStart = start;
+          this.text.selectionEnd = start;
         }
         break;
       case 'Del':
@@ -221,7 +223,8 @@ class Keyboard {
         } else if (end !== val.length) {
           this.text.value = val.slice(0, start) + val.slice(start + 1);
         }
-        this.text.selectionStart = this.text.selectionEnd = start;
+        this.text.selectionStart = start;
+        this.text.selectionEnd = start;
         break;
       case 'Lang':
         this.toggleLang();
