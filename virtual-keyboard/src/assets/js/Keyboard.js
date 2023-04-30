@@ -92,14 +92,16 @@ class Keyboard {
     document.body.prepend(div);
 
     document.addEventListener('mouseup', this.mouseUp.bind(this));
+    document.addEventListener('keydown', this.keyDown.bind(this));
+    document.addEventListener('keyup', this.keyUp.bind(this));
   }
 
   printCharBtn() {
     const e = document.querySelector('.board__input');
     const { value: val, selectionStart: start, selectionEnd: end } = e;
     e.value = val.slice(0, start) + this.char + val.slice(end, val.length);
+    e.selectionStart = start + this.char.length;
     e.selectionEnd = start + this.char.length;
-    e.selectionStart = e.selectionEnd;
   }
 
   toggleLowUpBtn() {
@@ -132,6 +134,42 @@ class Keyboard {
       document
         .querySelectorAll('.btn>span>.lowerKey')
         .forEach((element) => element.classList.toggle('hidden'));
+    }
+  }
+
+  keyDown(event) {
+    event.preventDefault();
+
+    const button = document.querySelector(`.${event.code}`);
+
+    if (button) {
+      button.classList.add('btn--active');
+      this.char = button
+        .querySelector(':not(.hidden)')
+        .querySelector(':not(.hidden)').textContent;
+      this.implementKeyFunction();
+    }
+
+    if (event.ctrlKey && event.altKey) {
+      this.toggleLang();
+    }
+  }
+
+  keyUp(event) {
+    event.preventDefault();
+
+    const button = document.querySelector(`.${event.code}`);
+
+    if (button) {
+      button.classList.remove('btn--active');
+    }
+
+    if (this.shift && (event.code === 'ShiftLeft' || event.code === 'ShiftRight')) {
+      document
+        .querySelectorAll('.btn--shift')
+        .forEach((element) => element.classList.remove('btn--active'));
+      this.shift = false;
+      this.toggleLowUpBtn();
     }
   }
 
